@@ -1,4 +1,6 @@
+import { useNavigate } from 'react-router-dom'
 function Login() {
+    const navigate = useNavigate()
   return (
     <div style={{
       display: 'flex',
@@ -58,7 +60,9 @@ function Login() {
           />
         </div>
 
-        <button style={{
+        <button onClick={() => {
+  navigate('/dashboard')
+}} style={{
           width: '100%',
           padding: '0.75rem',
           borderRadius: '8px',
