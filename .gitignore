@@ -1,0 +1,15 @@
+# Dependencias
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Variables de entorno (datos sensibles)
+.env
+.env.local
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
