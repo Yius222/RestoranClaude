@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import Login from './pages/auth/Login.jsx'
-import Dashboard from './pages/dashboard/dashboard.jsx'
+import Login from './pages/auth/Login'
+import Dashboard from './pages/dashboard/Dashboard'
+import RutaProtegida from './components/auth/RutaProtegida'
 
 function App() {
   return (
@@ -8,7 +9,14 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route
+          path="/dashboard"
+          element={
+            <RutaProtegida>
+              <Dashboard />
+            </RutaProtegida>
+          }
+        />
       </Routes>
     </BrowserRouter>
   )
