@@ -1,4 +1,15 @@
+import { useNavigate } from 'react-router-dom'
+
 function Dashboard() {
+  const navigate = useNavigate()
+  const usuario = JSON.parse(localStorage.getItem('usuario'))
+
+  const cerrarSesion = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('usuario')
+    navigate('/login')
+  }
+
   return (
     <div style={{
       display: 'flex',
@@ -32,6 +43,22 @@ function Dashboard() {
             {item}
           </button>
         ))}
+
+        <button
+          onClick={cerrarSesion}
+          style={{
+            marginTop: 'auto',
+            padding: '0.75rem 1rem',
+            borderRadius: '8px',
+            border: '1px solid #ef4444',
+            background: 'transparent',
+            color: '#ef4444',
+            textAlign: 'left',
+            cursor: 'pointer',
+            fontSize: '0.95rem'
+          }}>
+          Cerrar sesión
+        </button>
       </aside>
 
       {/* Contenido principal */}
@@ -39,8 +66,12 @@ function Dashboard() {
         flex: 1,
         padding: '2rem'
       }}>
-        <h1 style={{ marginBottom: '0.5rem' }}>Bienvenido 👋</h1>
-        <p style={{ color: '#94a3b8' }}>Selecciona un módulo para comenzar</p>
+        <h1 style={{ marginBottom: '0.5rem' }}>
+          Bienvenido, {usuario?.nombre} 👋
+        </h1>
+        <p style={{ color: '#94a3b8' }}>
+          Rol: {usuario?.rol}
+        </p>
       </main>
 
     </div>
