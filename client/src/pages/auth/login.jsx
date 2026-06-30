@@ -1,6 +1,30 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { loginService } from '../../services/auth.service'
+
 function Login() {
-    const navigate = useNavigate()
+  const navigate = useNavigate()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [cargando, setCargando] = useState(false)
+
+  const handleLogin = async () => {
+    setError('')
+    setCargando(true)
+
+    try {
+      const data = await loginService(email, password)
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('usuario', JSON.stringify(data.usuario))
+      navigate('/dashboard')
+    } catch (err) {
+      setError('Email o contraseña incorrectos')
+    } finally {
+      setCargando(false)
+    }
+  }
+
   return (
     <div style={{
       display: 'flex',
@@ -22,13 +46,29 @@ function Login() {
           Inicia sesión para continuar
         </p>
 
+        {error && (
+          <div style={{
+            background: '#450a0a',
+            border: '1px solid #991b1b',
+            color: '#fca5a5',
+            padding: '0.75rem',
+            borderRadius: '8px',
+            marginBottom: '1rem',
+            textAlign: 'center'
+          }}>
+            {error}
+          </div>
+        )}
+
         <div style={{ marginBottom: '1rem' }}>
           <label style={{ display: 'block', marginBottom: '0.5rem', color: '#94a3b8' }}>
-            Usuario
+            Email
           </label>
           <input
-            type="text"
-            placeholder="Tu usuario"
+            type="email"
+            placeholder="tu@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             style={{
               width: '100%',
               padding: '0.75rem',
@@ -48,6 +88,8 @@ function Login() {
           <input
             type="password"
             placeholder="Tu contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             style={{
               width: '100%',
               padding: '0.75rem',
@@ -60,20 +102,21 @@ function Login() {
           />
         </div>
 
-        <button onClick={() => {
-  navigate('/dashboard')
-}} style={{
-          width: '100%',
-          padding: '0.75rem',
-          borderRadius: '8px',
-          border: 'none',
-          background: '#f97316',
-          color: 'white',
-          fontSize: '1rem',
-          fontWeight: 'bold',
-          cursor: 'pointer'
-        }}>
-          Entrar al sistema
+        <button
+          onClick={handleLogin}
+          disabled={cargando}
+          style={{
+            width: '100%',
+            padding: '0.75rem',
+            borderRadius: '8px',
+            border: 'none',
+            background: cargando ? '#94a3b8' : '#f97316',
+            color: 'white',
+            fontSize: '1rem',
+            fontWeight: 'bold',
+            cursor: cargando ? 'not-allowed' : 'pointer'
+          }}>
+          {cargando ? 'Entrando...' : 'Entrar al sistema'}
         </button>
       </div>
     </div>

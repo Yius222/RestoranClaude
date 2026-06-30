@@ -2,14 +2,17 @@ const express = require('express')
 const cors = require('cors')
 require('dotenv').config()
 
-// Crear la aplicación Express
+const authRoutes = require('./modules/core/auth.routes')
+
 const app = express()
 
-// Middlewares — reglas que aplican a TODAS las peticiones
-app.use(cors())           // Permite conexiones desde el cliente (React)
-app.use(express.json())   // Permite recibir datos en formato JSON
+app.use(cors())
+app.use(express.json())
 
-// Ruta de prueba — para verificar que el servidor funciona
+// Rutas
+app.use('/api/auth', authRoutes)
+
+// Ruta de salud
 app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'ok',
